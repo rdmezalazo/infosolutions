@@ -6,18 +6,26 @@ on:
       - main
 
 jobs:
-  deploy:
+  ftp-deploy:
+    name: FTP Deploy
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy via FTP
+      - name: Deploy files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /htdocs
           port: 21
+
+          # 👇 IMPORTANTE: ajusta esta ruta según ByetHost
+          # prueba primero con "/" si no funciona "/htdocs" o "/public_html"
+          server-dir: /
+
+          # opcional pero recomendado
+          dangerous-clean-slate: true
+          log-level: verbose
